@@ -17,7 +17,7 @@ public class PersonVersion2 {
 
     @Override
     public String toString() {
-        return "UserVersion2{" +
+        return "PersonVersion2{" +
                 "name=" + fullName +
                 '}';
     }
