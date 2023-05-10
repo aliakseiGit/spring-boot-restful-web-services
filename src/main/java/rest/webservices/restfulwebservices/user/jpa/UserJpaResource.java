@@ -1,5 +1,6 @@
 package rest.webservices.restfulwebservices.user.jpa;
 
+import rest.webservices.restfulwebservices.exception.PostNotFoundException;
 import rest.webservices.restfulwebservices.exception.UserNotFoundException;
 import rest.webservices.restfulwebservices.user.Post;
 import rest.webservices.restfulwebservices.user.User;
@@ -69,6 +70,24 @@ public class UserJpaResource {
 		return user.getPosts();
 	}
 
+	@DeleteMapping("jpa/users/{userId}/posts/{postId}")
+	public void deletePostForUser(@PathVariable Integer userId, @PathVariable Integer postId) {
+		final Optional<User> userOptional = userRepository.findById(userId);
+		if (userOptional.isEmpty()){
+			throw new UserNotFoundException("id:" + userId);
+		}
+		User user = userOptional.get();
+
+		final Optional<Post> requiredPost = user.getPosts().stream().filter(post -> postId.equals(post.getId())).findFirst();
+
+		if (requiredPost.isEmpty()){
+			throw new PostNotFoundException("id:" + postId);
+		}
+		Post post = requiredPost.get();
+
+		postRepository.deleteById(post.getId());
+	}
+
 	@PostMapping("jpa/users/{id}/posts")
 	public ResponseEntity<Object> createPostForUser(@PathVariable Integer id,
 													@Valid @RequestBody Post post) {
@@ -82,6 +101,7 @@ public class UserJpaResource {
 
 		final Post savedPost = postRepository.save(post);
 
+		//Add location header
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{id}")
 				.buildAndExpand(savedPost.getId())

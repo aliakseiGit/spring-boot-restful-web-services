@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
     public static final String USER_NOT_FOUND_PREFIX = "User not found ";
     private static final String NOT_VALID_INPUT = "Input data not valid. ";
+    private static final String POST_NOT_FOUND_PREFIX = "Post not found ";
 
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<ErrorDetails> handleAllExceptions(Exception ex, WebRequest request) {
@@ -33,6 +34,14 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
+    @ExceptionHandler(PostNotFoundException.class)
+    public final ResponseEntity<ErrorDetails> handlePostNotFoundException(Exception ex, WebRequest request) {
+        var message = POST_NOT_FOUND_PREFIX + ex.getMessage();
+        ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), message, request.getDescription(false));
+
+        return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+    }
+
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
