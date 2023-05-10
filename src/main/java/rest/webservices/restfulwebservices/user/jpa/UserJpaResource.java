@@ -18,9 +18,9 @@ import java.util.Optional;
 @RestController
 public class UserJpaResource {
 
-	private UserRepository userRepository;
+	private final UserRepository userRepository;
 
-	private PostRepository postRepository;
+	private final PostRepository postRepository;
 
 	public UserJpaResource(UserRepository repository, PostRepository postRepository) {
 		this.userRepository = repository;
