@@ -3,23 +3,25 @@ package rest.webservices.restfulwebservices.user.web;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import rest.webservices.restfulwebservices.user.User;
 import rest.webservices.restfulwebservices.user.jpa.UserRepository;
 
 import java.util.List;
 
 @Controller
-public class UserWebController {
+@RequestMapping("/web/users")
+public class UsersWebController {
     private final UserRepository userRepository;
 
-    public UserWebController(UserRepository userRepository) {
+    public UsersWebController(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    @GetMapping("/web/users")
+    @RequestMapping(method = RequestMethod.GET)
     public String retrieveAllUsers(Model model) {
         final List<User> allUsers = userRepository.findAll();
-        allUsers.forEach(System.out::println);
         model.addAttribute("usersList", allUsers);
 
         return "all-users";

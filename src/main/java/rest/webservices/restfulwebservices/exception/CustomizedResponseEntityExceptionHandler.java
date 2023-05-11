@@ -19,6 +19,8 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
     private static final String NOT_VALID_INPUT = "Input data not valid. ";
     private static final String POST_NOT_FOUND_PREFIX = "Post not found ";
 
+
+
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<ErrorDetails> handleAllExceptions(Exception ex, WebRequest request) {
         ErrorDetails errorDetails = new ErrorDetails(LocalDateTime.now(), ex.getMessage(), request.getDescription(false));

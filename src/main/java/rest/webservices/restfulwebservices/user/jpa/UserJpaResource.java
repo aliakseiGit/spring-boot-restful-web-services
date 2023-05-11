@@ -1,5 +1,6 @@
 package rest.webservices.restfulwebservices.user.jpa;
 
+import org.springframework.http.MediaType;
 import rest.webservices.restfulwebservices.exception.PostNotFoundException;
 import rest.webservices.restfulwebservices.exception.UserNotFoundException;
 import rest.webservices.restfulwebservices.user.Post;
@@ -27,9 +28,15 @@ public class UserJpaResource {
 		this.postRepository = postRepository;
 	}
 
-	// GET /users
-	@GetMapping("/jpa/users")
+	// GET /users by default in xml
+	@GetMapping(value = "/jpa/users", produces = MediaType.APPLICATION_XML_VALUE)
 	public List<User> retrieveAllUsers() {
+		return userRepository.findAll();
+	}
+
+	// GET /users in json
+	@GetMapping(value = "/jpa/users", produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<User> retrieveAllUsersJson() {
 		return userRepository.findAll();
 	}
 
